@@ -130,26 +130,3 @@ class Point(tuple):
             return self.x == other.x and self.y == other.y
         else:
             raise TypeError(f"Can't compare to objects of type {type(other)}!")
-
-
-class Coord(Point):
-    def __init__(self, x, y):
-        if not isinstance(x, int):
-            raise ValueError("x coordinate value is not an integer")
-
-        if not isinstance(y, int):
-            raise ValueError("y coordinate value is not an integer")
-
-        super(Coord, self).__init__(x, y)
-
-    def __add__(self, other):
-        if isinstance(other, Vector) and isinstance(other.x, int) and isinstance(other.y, int):
-            return Coord(self.x + other.x, self.y + other.y)
-        else:
-            super(Coord, self).__add__(other)
-
-    def __sub__(self, other):
-        if isinstance(other, Vector) and isinstance(other.x, int) and isinstance(other.y, int):
-            return Coord(self.x - other.x, self.y - other.y)
-        else:
-            super(Coord, self).__add__(other)

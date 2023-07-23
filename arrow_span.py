@@ -1,14 +1,13 @@
-from geometry import Point, Coord, Vector
 from canvas import Canvas
 import numpy as np
 
 
 class ArrowSpan(Canvas):
-    def __init__(self, size=(1210, 1210), mode="RGBA", background=(255, 255, 255, 0), name="arrow_span"):
+    def __init__(self, size=(1210, 1210), mode="RGBA", background=(255, 255, 255, 255), name="arrow_span"):
         super(ArrowSpan, self).__init__(mode, size, background, name)
 
     @staticmethod
-    def create_config(lengths=None, angles=None, image_size=(1210, 1210), background_color=(255, 255, 255, 0),
+    def create_config(lengths=None, angles=None, image_size=(1210, 1210), background_color=(255, 255, 255, 255),
                       arrow_color=(0, 0, 0, 255), line_thickness=None, arrow_tip_width=None, arrow_tip_length=None):
 
         if not lengths:
@@ -30,10 +29,11 @@ class ArrowSpan(Canvas):
         arrows = []
         for length in config["lengths"]:
             for angle in config["angles"]:
-                new_arrow = ArrowSpan(size=config["image_size"], background=config["background_color"],
-                                      name=f"arrow_{length}_{angle}")
+                new_arrow = cls(size=config["image_size"], background=config["background_color"],
+                                name=f"arrow_{length}_{angle}")
                 new_arrow.draw_radial_arrow(angle=angle, length=length, color=config["arrow_color"],
-                                            line_thickness=config["line_thickness"], tip_width=config["arrow_tip_width"],
+                                            line_thickness=config["line_thickness"],
+                                            tip_width=config["arrow_tip_width"],
                                             tip_length=config["arrow_tip_length"])
                 arrows.append(new_arrow)
 
