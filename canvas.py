@@ -3,15 +3,16 @@ from geometry import Vector, Point
 
 
 class Canvas:
-    def __init__(self, mode="RGBA", size=(1210, 1210), background=(255, 255, 255, 255), name="canvas"):
+    def __init__(self, mode="RGBA", size=(1210, 1210), background_color=(255, 255, 255, 255), name="canvas"):
         self.name = name
         self.width = int(size[0])
         self.height = int(size[1])
+        self.background_color = background_color
 
         self.center = Point(self.width / 2, self.height / 2)
 
         # Create a new blank image
-        self.image = Image.new(mode, size, background)
+        self.image = Image.new(mode, size, background_color)
 
         # Create a drawing object
         self.draw = ImageDraw.Draw(self.image, mode=mode)
@@ -99,22 +100,54 @@ class Canvas:
         self.draw_arrow(start=self.center, end=end, color=color, line_thickness=line_thickness,
                         tip_width=tip_width, tip_length=tip_length)
 
+    def draw_dot(self, center=None, radius=None, color=(0, 0, 0, 255)):
+        if not center:
+            center = self.center
+        else:
+            center = Point(*center)
+        if not radius:
+            radius = min(self.width, self.height) / 4
+
+        top_left = center + radius*Vector.up() + radius*Vector.left()
+        bottom_right = center + radius*Vector.down() + radius*Vector.right()
+
+        self.draw.ellipse([top_left, bottom_right], fill=color, outline=None, width=0)
+
+    def draw_square(self, position=None, side_length=None, color=(0, 0, 0, 255)):
+        if not position:
+            position = self.center
+        else:
+            position = Point(*position)
+        if not side_length:
+            side_length = min(self.width, self.height) / 4
+
+        top_left = position + (side_length / 2) * Vector.up() + (side_length / 2) * Vector.left()
+        bottom_right = position + (side_length / 2) * Vector.down() + (side_length / 2) * Vector.right()
+
+        self.draw.rectangle([top_left, bottom_right], fill=color, width=0)
+
     def draw_letter(self, letter="A", location=None, color=(0, 0, 0, 255), font=None):
         if not location:
             location = self.center
 
         self.draw.text(location, letter, fill=color, font=font)
 
-    def save(self, path="", extension="png"):
+    def save(self, path="", name_overwrite=None, extension="png"):
         """
         Saves the image using the name and the given filename extension.
 
         :param path: Path where the file should be saved
         :param extension: Filename extension.
+        :param name_overwrite: Filename to use instead of the name of the canvas.
         :returns: None
         """
 
-        self.image.save(f"{path}{self.name}.{extension}")
+        if not name_overwrite:
+            name = self.name
+        else:
+            name = name_overwrite
+
+        self.image.save(f"{path}{name}.{extension}")
 
     def show(self):
         """

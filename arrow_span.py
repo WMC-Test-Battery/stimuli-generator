@@ -3,8 +3,8 @@ import numpy as np
 
 
 class ArrowSpan(Canvas):
-    def __init__(self, size=(1210, 1210), mode="RGBA", background=(255, 255, 255, 255), name="arrow_span"):
-        super(ArrowSpan, self).__init__(mode, size, background, name)
+    def __init__(self, size=(1210, 1210), mode="RGBA", background_color=(255, 255, 255, 255), name="arrow_span"):
+        super(ArrowSpan, self).__init__(mode, size, background_color, name)
 
     @staticmethod
     def create_config(lengths=None, angles=None, image_size=(1210, 1210), background_color=(255, 255, 255, 255),
@@ -29,7 +29,7 @@ class ArrowSpan(Canvas):
         arrows = []
         for length in config["lengths"]:
             for angle in config["angles"]:
-                new_arrow = cls(size=config["image_size"], background=config["background_color"],
+                new_arrow = cls(size=config["image_size"], background_color=config["background_color"],
                                 name=f"arrow_{length}_{angle}")
                 new_arrow.draw_radial_arrow(angle=angle, length=length, color=config["arrow_color"],
                                             line_thickness=config["line_thickness"],

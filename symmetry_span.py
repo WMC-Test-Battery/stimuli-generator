@@ -4,9 +4,9 @@ import numpy as np
 
 
 class SymmetrySpan(Canvas):
-    def __init__(self, size=(1210, 1210), mode="RGBA", background=(255, 255, 255, 255),
+    def __init__(self, size=(1210, 1210), mode="RGBA", background_color=(255, 255, 255, 255),
                  name="symmetry_span"):
-        super(SymmetrySpan, self).__init__(mode, size, background, name)
+        super(SymmetrySpan, self).__init__(mode, size, background_color, name)
 
         self.squares = None
         self.rows = None
@@ -46,23 +46,26 @@ class SymmetrySpan(Canvas):
         for row in range(self.rows):
             for col in range(self.cols):
                 if self.squares[row][col] == 1:
-                    top_left = Point(col * col_step, row * row_step)
-                    bottom_right = Point((col + 1) * col_step - 1, (row + 1) * row_step - 1)
-                    self.draw.rectangle([top_left, bottom_right], fill=color, width=0)
+                    position = Point((col * col_step) + (col_step / 2), (row * row_step) + (row_step / 2))
+                    side_length = row_step
+                    self.draw_square(position=position, side_length=side_length, color=color)
+
+    def draw_grid(self, rows=None, cols=None, color=(0, 0, 0, 255), line_thickness=None):
+        super(SymmetrySpan, self).draw_grid(rows=self.rows, cols=self.cols, color=color)
 
     @classmethod
     def create_batch(cls, n_symm=6, n_asymm=6, asym_noise=0.5, rows=8, cols=8, folder="symmetry_span/",
                      image_size=(1210, 1210), background_color=(255, 255, 255, 255), square_color=(0, 0, 0, 255),
                      line_color=(0, 0, 0, 255)):
         for i in range(n_symm):
-            stimulus = cls(size=image_size, background=background_color, name=f"symm{i}")
+            stimulus = cls(size=image_size, background_color=background_color, name=f"symm{i}")
             stimulus.configure_squares(rows=rows, cols=cols, symmetric=True)
             stimulus.draw_squares(color=square_color)
             stimulus.draw_grid(color=line_color)
             stimulus.save(path=folder)
 
         for i in range(n_asymm):
-            stimulus = cls(size=image_size, background=background_color, name=f"asymm{i}")
+            stimulus = cls(size=image_size, background_color=background_color, name=f"asymm{i}")
             stimulus.configure_squares(rows=rows, cols=cols, symmetric=False, noise=asym_noise)
             stimulus.draw_squares(color=square_color)
             stimulus.draw_grid(color=line_color)

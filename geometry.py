@@ -31,6 +31,26 @@ class Vector(tuple):
 
         return Vector(x, y)
 
+    @classmethod
+    def zero(cls):
+        return cls(0, 0)
+
+    @classmethod
+    def up(cls):
+        return cls(0, -1)
+
+    @classmethod
+    def down(cls):
+        return cls(0, 1)
+
+    @classmethod
+    def left(cls):
+        return cls(-1, 0)
+
+    @classmethod
+    def right(cls):
+        return cls(1, 0)
+
     def __add__(self, other):
         if isinstance(other, Vector):
             return Vector(self.x + other.x, self.y + other.y)
