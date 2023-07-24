@@ -6,7 +6,7 @@ from geometry import Point
 
 class DotSpan(Canvas):
     def __init__(self, size=(1210, 1210), mode="RGBA", background_color=(255, 255, 255, 255), name="arrow_span"):
-        super(DotSpan, self).__init__(mode, size, background_color, name)
+        super(DotSpan, self).__init__(size=size, mode=mode, background_color=background_color, name=name)
 
         self.dots = None
         self.rows = None

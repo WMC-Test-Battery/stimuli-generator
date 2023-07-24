@@ -4,7 +4,7 @@ import numpy as np
 
 class ArrowSpan(Canvas):
     def __init__(self, size=(1210, 1210), mode="RGBA", background_color=(255, 255, 255, 255), name="arrow_span"):
-        super(ArrowSpan, self).__init__(mode, size, background_color, name)
+        super(ArrowSpan, self).__init__(size=size, mode=mode, background_color=background_color, name=name)
 
     @staticmethod
     def create_config(lengths=None, angles=None, image_size=(1210, 1210), background_color=(255, 255, 255, 255),

@@ -4,7 +4,7 @@ from rotation_span import RotationSpan
 from dot_span import DotSpan
 
 if __name__ == "__main__":
+    RotationSpan.create_batch()
     SymmetrySpan.create_batch()
-    config = ArrowSpan.create_config()
-    ArrowSpan.create_batch(batch_size=1, set_size=16, config=config)
+    ArrowSpan.create_batch()
     DotSpan.create_batch()

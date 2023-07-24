@@ -1,18 +1,20 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 from geometry import Vector, Point
 
 
 class Canvas:
-    def __init__(self, mode="RGBA", size=(1210, 1210), background_color=(255, 255, 255, 255), name="canvas"):
-        self.name = name
+    def __init__(self, size=(1210, 1210), mode="RGBA", background_color=(255, 255, 255, 255), name="canvas"):
         self.width = int(size[0])
         self.height = int(size[1])
+        self.size = (self.width, self.height)
+        self.mode = mode
         self.background_color = background_color
+        self.name = name
 
         self.center = Point(self.width / 2, self.height / 2)
 
         # Create a new blank image
-        self.image = Image.new(mode, size, background_color)
+        self.image = Image.new(mode, self.size, background_color)
 
         # Create a drawing object
         self.draw = ImageDraw.Draw(self.image, mode=mode)
@@ -126,11 +128,23 @@ class Canvas:
 
         self.draw.rectangle([top_left, bottom_right], fill=color, width=0)
 
-    def draw_letter(self, letter="A", location=None, color=(0, 0, 0, 255), font=None):
+    def draw_letter(self, letter="A", location=None, color=(0, 0, 0, 255), mirror=False, angle=0, font=None, size=None):
         if not location:
             location = self.center
+        if not size:
+            size = min(self.width, self.height) // 3
+        if not font:
+            font = ImageFont.truetype("fonts/ARIAL.TTF", size)
 
-        self.draw.text(location, letter, fill=color, font=font)
+        letter_image = Image.new(mode="RGBA", size=self.size, color=(255, 255, 255, 0))
+        letter_draw = ImageDraw.Draw(letter_image)
+        letter_draw.text(location, letter, fill=color, font=font, anchor="mm")
+
+        if mirror:
+            letter_image = ImageOps.mirror(letter_image)
+        letter_image = letter_image.rotate(angle)
+
+        self.image = Image.alpha_composite(self.image, letter_image)
 
     def save(self, path="", name_overwrite=None, extension="png"):
         """
@@ -158,16 +172,22 @@ class Canvas:
 
         self.image.show()
 
-    def draw_checker_pattern(self, color=(220, 220, 220, 255)):
+    def draw_checker_pattern(self, color=(100, 100, 100, 100)):
         """
-        Draws a checkerboard pattern over the image.
+        Draws a transparent checkerboard pattern over the image.
         """
+
+        checker_image = Image.new(mode="RGBA", size=self.size, color=(255, 255, 255, 0))
+        checker_draw = ImageDraw.Draw(checker_image)
+
         for x in range(self.width):
             for y in range(self.height):
                 if x % 2 == 0 and y % 2 == 0:
-                    self.draw.point((x, y), fill=color)
+                    checker_draw.point((x, y), fill=color)
                 elif x % 2 == 1 and y % 2 == 1:
-                    self.draw.point((x, y), fill=color)
+                    checker_draw.point((x, y), fill=color)
+
+        self.image = Image.alpha_composite(self.image, checker_image)
 
     def __repr__(self):
         return f"{self.name}({type(self)})"
