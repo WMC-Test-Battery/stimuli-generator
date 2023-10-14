@@ -17,3 +17,9 @@ venv.bak/\
 
 # Jetbrains
 .idea
+
+# Output folders
+arrow_span
+dot_span
+rotation_span
+symmetry_span
