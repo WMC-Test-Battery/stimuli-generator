@@ -16,4 +16,4 @@ env.bak/
 venv.bak/\
 
 # Jetbrains
-.idea/
+.idea
