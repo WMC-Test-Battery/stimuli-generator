@@ -1,3 +1,5 @@
+import math
+
 from geometry import Vector, Point
 from canvas import Canvas
 import numpy as np
@@ -57,15 +59,21 @@ class SymmetrySpan(Canvas):
     def create_batch(cls, n_symm=6, n_asymm=6, asym_noise=0.5, rows=8, cols=8, folder="symmetry_span/",
                      image_size=(1210, 1210), background_color=(255, 255, 255, 255), square_color=(0, 0, 0, 255),
                      line_color=(0, 0, 0, 255)):
+
+        num_of_digits = len(str(n_symm + n_asymm - 1))
         for i in range(n_symm):
-            stimulus = cls(size=image_size, background_color=background_color, name=f"symm{i}")
+            name = f"symm{i:0>{num_of_digits}}"
+
+            stimulus = cls(size=image_size, background_color=background_color, name=name)
             stimulus.configure_squares(rows=rows, cols=cols, symmetric=True)
             stimulus.draw_squares(color=square_color)
             stimulus.draw_grid(color=line_color)
             stimulus.save(path=folder)
 
         for i in range(n_asymm):
-            stimulus = cls(size=image_size, background_color=background_color, name=f"asymm{i}")
+            name = f"asym{i:0>{num_of_digits}}"
+
+            stimulus = cls(size=image_size, background_color=background_color, name=name)
             stimulus.configure_squares(rows=rows, cols=cols, symmetric=False, noise=asym_noise)
             stimulus.draw_squares(color=square_color)
             stimulus.draw_grid(color=line_color)

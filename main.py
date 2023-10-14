@@ -5,6 +5,6 @@ from dot_span import DotSpan
 
 if __name__ == "__main__":
     RotationSpan.create_batch()
-    SymmetrySpan.create_batch()
     ArrowSpan.create_batch()
     DotSpan.create_batch()
+    SymmetrySpan.create_batch()
